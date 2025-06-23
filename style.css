@@ -1,0 +1,192 @@
+/* Importando uma fonte do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
+/* Variáveis de cores para fácil customização */
+:root {
+    --cor-primaria: #0084ff;          /* Azul vibrante */
+    --cor-primaria-hover: #006adc;    /* Azul mais escuro para hover */
+    --cor-fundo-card: rgba(23, 27, 33, 0.85); /* Fundo do card (escuro e semi-transparente) */
+    --cor-texto-principal: #f0f0f0;   /* Cor dos títulos (claro) */
+    --cor-texto-secundario: #a0a0a0; /* Cor do subtítulo e "CONTATO" (cinza claro) */
+    --cor-texto-botoes: #ffffff;      /* Cor do texto dentro dos botões */
+    --cor-sombra: rgba(0, 0, 0, 0.4); /* Sombra mais escura */
+}
+
+/* --- Reset e Configurações Globais --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #000000; /* Fundo preto sólido para o efeito Matrix */
+    padding: 20px;
+    overflow: hidden; /* Esconde barras de rolagem que o canvas possa criar */
+}
+
+/* --- Estilos para o Canvas de Fundo --- */
+#matrix-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; /* Fica no fundo, mas acima do background do body */
+}
+
+/* --- Card Principal --- */
+.link-card {
+    position: relative;
+    z-index: 10; /* Garante que o card fique na frente do canvas */
+    width: 100%;
+    max-width: 400px;
+    background-color: var(--cor-fundo-card);
+    backdrop-filter: blur(8px); /* Efeito de vidro fosco para desfocar a animação atrás */
+    border-radius: 24px;
+    padding: 30px;
+    padding-top: 80px; /* Espaço para a foto de perfil sair */
+    box-shadow: 0 10px 30px var(--cor-sombra);
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    
+    /* Animação de entrada */
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeIn 0.8s ease forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Cabeçalho (Foto, Título, Subtítulo) --- */
+.link-card header {
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-pic {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 5px solid rgba(0, 132, 255, 0.4);
+    box-shadow: 0 0 25px rgba(0, 132, 255, 0.5);
+    position: absolute;
+    top: -60px;
+    background-color: #171b21;
+    object-fit: cover;
+}
+
+.link-card h1 {
+    font-size: 1.8rem;
+    color: var(--cor-texto-principal);
+    font-weight: 700;
+    margin-top: 10px;
+}
+
+.link-card p {
+    font-size: 0.9rem;
+    color: var(--cor-texto-secundario);
+}
+
+/* --- Lista de Links --- */
+.link-list {
+    list-style: none;
+    width: 100%;
+}
+
+.link-list li {
+    margin-bottom: 15px;
+    opacity: 0;
+    transform: translateX(-20px);
+}
+
+.link-list li a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    background-color: var(--cor-primaria);
+    color: var(--cor-texto-botoes);
+    padding: 15px;
+    border-radius: 12px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 132, 255, 0.2);
+}
+
+.link-list li a:hover {
+    background-color: var(--cor-primaria-hover);
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 132, 255, 0.3);
+}
+
+.link-list li a i {
+    font-size: 1.2rem;
+    margin-right: 12px;
+}
+
+/* --- Seção de Contato --- */
+.contact-section {
+    margin-top: 30px;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.contact-section h2 {
+    font-size: 0.9rem;
+    color: var(--cor-texto-secundario);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+}
+
+.contact-icons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.contact-icons a {
+    color: var(--cor-primaria);
+    font-size: 1.5rem;
+    padding: 10px;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--cor-primaria);
+    transition: all 0.3s ease;
+}
+
+.contact-icons a:hover {
+    background-color: var(--cor-primaria);
+    color: var(--cor-texto-botoes);
+    transform: translateY(-5px);
+}
+
+/* --- Responsividade --- */
+@media (max-width: 480px) {
+    .link-card {
+        padding: 20px;
+        padding-top: 70px;
+    }
+    .profile-pic {
+        width: 100px;
+        height: 100px;
+        top: -50px;
+    }
+}
