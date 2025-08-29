@@ -1,192 +1,221 @@
-/* Importando uma fonte do Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+/* ----------------------------------------------------
+   Systems_BSI – Página de Links
+   Visual fiel ao mockup + fundo com partículas (canvas)
+   Fonte: Poppins
+-----------------------------------------------------*/
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 
-/* Variáveis de cores para fácil customização */
-:root {
-    --cor-primaria: #0084ff;          /* Azul vibrante */
-    --cor-primaria-hover: #006adc;    /* Azul mais escuro para hover */
-    --cor-fundo-card: rgba(23, 27, 33, 0.85); /* Fundo do card (escuro e semi-transparente) */
-    --cor-texto-principal: #f0f0f0;   /* Cor dos títulos (claro) */
-    --cor-texto-secundario: #a0a0a0; /* Cor do subtítulo e "CONTATO" (cinza claro) */
-    --cor-texto-botoes: #ffffff;      /* Cor do texto dentro dos botões */
-    --cor-sombra: rgba(0, 0, 0, 0.4); /* Sombra mais escura */
+:root{
+  --bg-outer: #0b0f14;           /* fundo da página */
+  --bg-card:  #151a20;           /* fundo do card */
+  --bg-card-2:#11161c;           /* leve contraste interno */
+  --stroke:   #262c34;           /* borda sutil */
+  --txt-1:    #f2f5f7;           /* títulos */
+  --txt-2:    #a8b0b8;           /* subtítulo/labels */
+  --brand:    #1e90ff;           /* azul principal */
+  --brand-2:  #0e6fe0;           /* azul hover */
+  --brand-3:  #72b6ff;           /* azul claro/acento */
+  --shadow:   0 20px 40px rgba(0,0,0,.55);
 }
 
-/* --- Reset e Configurações Globais --- */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*{ box-sizing: border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: radial-gradient(1200px 800px at 70% -10%, rgba(30,144,255,.12), transparent 60%),
+              radial-gradient(900px 600px at -10% 110%, rgba(30,144,255,.10), transparent 60%),
+              var(--bg-outer);
+  color: var(--txt-1);
+  display:grid;
+  place-items:center;
+  padding: 24px;
+  overflow-x:hidden;
 }
 
-body {
-    font-family: 'Poppins', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #000000; /* Fundo preto sólido para o efeito Matrix */
-    padding: 20px;
-    overflow: hidden; /* Esconde barras de rolagem que o canvas possa criar */
+/* Canvas ocupa o fundo inteiro */
+#particles{
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
 }
 
-/* --- Estilos para o Canvas de Fundo --- */
-#matrix-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1; /* Fica no fundo, mas acima do background do body */
+/* CARD PRINCIPAL */
+.link-card{
+  position: relative;
+  z-index: 1;
+  width: min(360px, 92vw);
+  background: linear-gradient(180deg, var(--bg-card), var(--bg-card-2));
+  border: 1px solid var(--stroke);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  padding: 88px 22px 22px;
+  isolation: isolate; /* garante sobreposição limpa do avatar */
 }
 
-/* --- Card Principal --- */
-.link-card {
-    position: relative;
-    z-index: 10; /* Garante que o card fique na frente do canvas */
-    width: 100%;
-    max-width: 400px;
-    background-color: var(--cor-fundo-card);
-    backdrop-filter: blur(8px); /* Efeito de vidro fosco para desfocar a animação atrás */
-    border-radius: 24px;
-    padding: 30px;
-    padding-top: 80px; /* Espaço para a foto de perfil sair */
-    box-shadow: 0 10px 30px var(--cor-sombra);
-    text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    
-    /* Animação de entrada */
-    opacity: 0;
-    transform: translateY(30px);
-    animation: fadeIn 0.8s ease forwards;
+/* Avatar circular com brilho */
+.link-card header{
+  text-align: center;
+  margin-top: -72px;
+  margin-bottom: 12px;
+}
+.profile-pic{
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #0b0f14;
+  box-shadow:
+    0 0 0 6px rgba(14,20,26,.65),
+    0 0 22px 6px rgba(30,144,255,.45),
+    0 0 60px 10px rgba(30,144,255,.25);
+  display:block;
+  margin: 0 auto 10px;
+  background:#0b0f14;
 }
 
-@keyframes fadeIn {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.link-card h1{
+  font-size: 22px;
+  letter-spacing: 1.2px;
+  margin: 0;
+  font-weight: 700;
+}
+.link-card header p{
+  margin: 6px 0 8px;
+  font-size: 12px;
+  letter-spacing: .6px;
+  color: var(--txt-2);
 }
 
-/* --- Cabeçalho (Foto, Título, Subtítulo) --- */
-.link-card header {
-    margin-bottom: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+/* Lista de links */
+.link-list{
+  list-style: none;
+  margin: 14px 0 18px;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+}
+.link-list li a{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  background: var(--brand);
+  color: #fff;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.06);
+  box-shadow:
+    0 10px 18px rgba(30,144,255,.28),
+    inset 0 -2px 0 rgba(0,0,0,.25);
+  font-weight: 700;
+  letter-spacing: .3px;
+  transform: translateY(0);
+  transition: transform .18s ease, background .18s ease, box-shadow .18s ease, filter .18s ease;
+}
+.link-list li a i{
+  font-size: 18px;
+  width: 22px;
+  display: grid;
+  place-items:center;
+}
+.link-list li a span{
+  flex: 1;
+  text-align: left;
+  font-size: 13px;
+}
+.link-list li a:hover{
+  background: var(--brand-2);
+  transform: translateY(-2px);
+  box-shadow:
+    0 16px 26px rgba(30,144,255,.36),
+    inset 0 -2px 0 rgba(0,0,0,.25);
+  filter: drop-shadow(0 0 10px rgba(30,144,255,.25));
+}
+.link-list li a:active{
+  transform: translateY(0);
 }
 
-.profile-pic {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    border: 5px solid rgba(0, 132, 255, 0.4);
-    box-shadow: 0 0 25px rgba(0, 132, 255, 0.5);
-    position: absolute;
-    top: -60px;
-    background-color: #171b21;
-    object-fit: cover;
+/* Seção de contato */
+.contact-section{
+  margin-top: 6px;
+}
+.contact-section h2{
+  margin: 10px 0 12px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .8px;
+  color: var(--txt-2);
+  text-align: center;
+}
+.contact-icons{
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+.contact-icons a{
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items:center;
+  border-radius: 50%;
+  background: #0f141a;
+  border: 1px solid var(--stroke);
+  color: var(--txt-1);
+  text-decoration: none;
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,.25);
+  transition: border-color .18s, box-shadow .18s, transform .18s, color .18s;
+}
+.contact-icons a i{ font-size: 16px; }
+.contact-icons a:hover{
+  border-color: rgba(30,144,255,.6);
+  color: var(--brand-3);
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 18px rgba(30,144,255,.18),
+    inset 0 -2px 0 rgba(0,0,0,.25);
 }
 
-.link-card h1 {
-    font-size: 1.8rem;
-    color: var(--cor-texto-principal);
-    font-weight: 700;
-    margin-top: 10px;
+/* Assinatura – pill inferior */
+.signature{
+  margin-top: 16px;
+  background: #0f141a;
+  border: 1px solid var(--stroke);
+  border-radius: 10px;
+  padding: 10px 12px;
+  text-align: center;
+}
+.signature p{
+  margin: 0;
+  font-size: 12px;
+  color: var(--txt-2);
+}
+.signature a{
+  color: var(--brand-3);
+  text-decoration: none;
+  font-weight: 700;
+}
+.signature a:hover{
+  text-decoration: underline;
 }
 
-.link-card p {
-    font-size: 0.9rem;
-    color: var(--cor-texto-secundario);
+/* Microacabamentos visuais */
+.link-card::before{
+  /* brilho suave no topo do card (bordas internas) */
+  content:"";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 120px;
+  border-radius: 18px 18px 0 0;
+  background: radial-gradient(80% 100% at 50% -30%, rgba(30,144,255,.10), transparent 70%);
+  pointer-events: none;
 }
 
-/* --- Lista de Links --- */
-.link-list {
-    list-style: none;
-    width: 100%;
-}
-
-.link-list li {
-    margin-bottom: 15px;
-    opacity: 0;
-    transform: translateX(-20px);
-}
-
-.link-list li a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    background-color: var(--cor-primaria);
-    color: var(--cor-texto-botoes);
-    padding: 15px;
-    border-radius: 12px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0, 132, 255, 0.2);
-}
-
-.link-list li a:hover {
-    background-color: var(--cor-primaria-hover);
-    transform: scale(1.05);
-    box-shadow: 0 6px 15px rgba(0, 132, 255, 0.3);
-}
-
-.link-list li a i {
-    font-size: 1.2rem;
-    margin-right: 12px;
-}
-
-/* --- Seção de Contato --- */
-.contact-section {
-    margin-top: 30px;
-    opacity: 0;
-    transform: translateY(20px);
-}
-
-.contact-section h2 {
-    font-size: 0.9rem;
-    color: var(--cor-texto-secundario);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 15px;
-}
-
-.contact-icons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-}
-
-.contact-icons a {
-    color: var(--cor-primaria);
-    font-size: 1.5rem;
-    padding: 10px;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid var(--cor-primaria);
-    transition: all 0.3s ease;
-}
-
-.contact-icons a:hover {
-    background-color: var(--cor-primaria);
-    color: var(--cor-texto-botoes);
-    transform: translateY(-5px);
-}
-
-/* --- Responsividade --- */
-@media (max-width: 480px) {
-    .link-card {
-        padding: 20px;
-        padding-top: 70px;
-    }
-    .profile-pic {
-        width: 100px;
-        height: 100px;
-        top: -50px;
-    }
+/* Acessibilidade: respeita preferências de movimento reduzido */
+@media (prefers-reduced-motion: reduce){
+  .link-list li a,
+  .contact-icons a{ transition: none; }
 }
